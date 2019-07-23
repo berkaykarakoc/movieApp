@@ -6,7 +6,10 @@ import com.movielist.movieApp.services.MovieListService;
 import com.movielist.movieApp.services.MovieService;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
 
 @Controller
 public class MovieController {
@@ -19,9 +22,9 @@ public class MovieController {
         this.movieListService = movieListService;
     }
 
-    @RequestMapping("/movieList/{movielistId}/movie/{movieId}/show")
-    public String showMovie(@PathVariable String movielistId, @PathVariable String movieId, Model model) {
-        model.addAttribute("movie", movieService.findByMovieListIdAndMovieId(Long.valueOf(movielistId), Long.valueOf(movieId)));
+    @GetMapping("/movieList/{movieListId}/movie/{movieId}/show")
+    public String showMovie(@PathVariable String movieListId, @PathVariable String movieId, Model model) {
+        model.addAttribute("movie", movieService.findByMovieListIdAndMovieId(Long.valueOf(movieListId), Long.valueOf(movieId)));
         return "movie_list/movie/show";
     }
 
@@ -30,7 +33,7 @@ public class MovieController {
         MovieList movieList = movieListService.findById(Long.valueOf(movieListId));
         Movie movie = new Movie();
         movie.setMovieList(movieList);
-        movieList.getMovies().add(movie);
+        movieList.addMovie(movie);
         model.addAttribute("movie", movie);
         return "movie_list/movie/movie-form";
     }
@@ -49,16 +52,16 @@ public class MovieController {
         movie.setMovieList(movieList);
         movieService.save(movie);
 
-        return "redirect:/movieList/" + movie.getMovieList().getId() + "/movie/" + movie.getId() + "/show";
+        return "redirect:/movieList/" + movie.getMovieList().getId() + "/show";
     }
 
-    @GetMapping("movieList/{movielistId}/movie/{movieId}/delete")
-    public String deleteMovie(@PathVariable String movielistId,
+    @GetMapping("movieList/{movieListId}/movie/{movieId}/delete")
+    public String deleteMovie(@PathVariable String movieListId,
                                    @PathVariable String movieId){
 
-        movieService.deleteById(Long.valueOf(movielistId), Long.valueOf(movieId));
+        movieService.deleteById(Long.valueOf(movieListId), Long.valueOf(movieId));
 
-        return "redirect:/movieList/" + movielistId + "/show";
+        return "redirect:/movieList/" + movieListId + "/show";
     }
 
 }

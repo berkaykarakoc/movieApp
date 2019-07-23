@@ -1,6 +1,7 @@
 package com.movielist.movieApp.models;
 
 import javax.persistence.*;
+import java.util.HashSet;
 import java.util.Set;
 
 @Entity
@@ -44,6 +45,16 @@ public class MovieList {
 
     public void setMovies(Set<Movie> movies) {
         this.movies = movies;
+    }
+
+    public Movie addMovie(Movie movie) {
+        movies.add(movie);
+        return movie;
+    }
+
+    public Movie removeMovie(Movie movie) {
+        movies.remove(movie);
+        return movie;
     }
 
     @Override

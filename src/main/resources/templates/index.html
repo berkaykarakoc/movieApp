@@ -9,8 +9,6 @@
 
 </head>
 <body>
-<!--/*@thymesVar id="movieLists" type="java.util.List"*/-->
-<!--/*@thymesVar id="movieList" type="com.movielist.movieApp.models.MovieList"*/-->
 <div class="table-responsive">
     <table class="table table-bordered">
         <thead class="thead-dark">
@@ -25,6 +23,7 @@
         </tr>
         </thead>
         <tbody>
+        <!--/*@thymesVar id="movieList" type="com.movielist.movieApp.models.MovieList"*/-->
         <tr th:each="movieList:${movieLists}">
             <td th:text="${movieList.name}">Spring in Action</td>
             <td><a href="#" th:href="@{'/movieList/' + ${movieList.id} + '/show'}">View</a></td>

@@ -24,20 +24,15 @@ public class MovieServiceImpl implements MovieService {
         Optional<MovieList> movieListOptional = movieListRepository.findById(movieListId);
 
         if (!movieListOptional.isPresent()){
-
+            return null;
         }
 
         MovieList movieList = movieListOptional.get();
 
-        Optional<Movie> movieOptional = movieList.getMovies().stream()
-                .filter(movie -> movie.getId().equals(movieId))
-                .findFirst();
+        Optional<Movie> movieOptional = movieRepository.findById(movieId);
 
-        if(!movieOptional.isPresent()){
+        return movieOptional.orElse(null);
 
-        }
-
-        return movieOptional.get();
     }
 
     @Override
@@ -60,17 +55,14 @@ public class MovieServiceImpl implements MovieService {
         if(movieListOptional.isPresent()){
             MovieList movieList = movieListOptional.get();
 
-            Optional<Movie> movieOptional = movieList
-                    .getMovies()
-                    .stream()
-                    .filter(movie -> movie.getId().equals(movieId))
-                    .findFirst();
+            Optional<Movie> movieOptional = movieRepository.findById(movieId);
 
             if(movieOptional.isPresent()){
                 Movie movieToDelete = movieOptional.get();
                 movieToDelete.setMovieList(null);
-                movieList.getMovies().remove(movieOptional.get());
+                movieList.removeMovie(movieOptional.get());
                 movieListRepository.save(movieList);
+                movieRepository.delete(movieToDelete);
             }
         }
     }

@@ -10,7 +10,6 @@
 </head>
 
 <body>
-<!--/*@thymesVar id="movies" type="java.util.List"*/-->
 <!--/*@thymesVar id="movie" type="com.movielist.movieApp.models.Movie"*/-->
 <div class="card text-center mx-auto" style="width: 80%; margin-top: 20px;">
     <div class="card-header" th:text="${movie.name} + ' (' + ${movie.rating} + ')'">
